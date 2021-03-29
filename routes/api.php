@@ -10,6 +10,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PermissionViaRoleContoller;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\GivePermissionUser;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,11 +29,11 @@ use App\Http\Controllers\ProductController;
 // });
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('/register', [AuthController::class, 'register'])->middleware(['auth', 'role:super-admin']);
+    Route::post('/register', [AuthController::class, 'register'])->middleware(['auth:admin', 'scope:admin', 'role:super-admin']);
     Route::post('/login', [AuthController::class, 'login']);
 });
 
-Route::group(['middleware' => ['auth', 'role:super-admin']], function () {
+Route::group(['middleware' => ['auth:admin', 'scope:admin', 'role:super-admin']], function () {
     Route::group(['prefix' => 'role'], function () {
         Route::get('/', [RoleController::class, 'index']);
         Route::post('/store', [RoleController::class, 'store']);
@@ -45,6 +47,11 @@ Route::group(['middleware' => ['auth', 'role:super-admin']], function () {
     Route::group(['prefix' => 'permission'], function () {
         Route::get('/', [PermissionController::class, 'index']);
         Route::post('/store', [PermissionController::class, 'store']);
+
+        Route::group(['prefix' => 'user'], function () {
+            Route::get('/', [GivePermissionUser::class, 'index']);
+            Route::post('/id={id}/store', [GivePermissionUser::class, 'store']);
+        });
     });
 
     Route::group(['prefix' => 'user'], function () {
@@ -53,8 +60,13 @@ Route::group(['middleware' => ['auth', 'role:super-admin']], function () {
     });
 });
 
-// Product
-Route::group(['prefix' => 'product', 'middleware' => ['auth','role:super-admin|employee|customer']], function () {
+Route::group(['prefix' => 'customer'], function () {
+    Route::get('/', [CustomerController::class, 'index']);
+    Route::post('/store', [CustomerController::class, 'store']);
+});
+
+// Product For Admin
+Route::group(['prefix' => 'product', 'middleware' => ['auth:admin','role:super-admin|employee|customer']], function () {
     Route::get('/', [ProductController::class, 'index']);
     Route::post('/store', [ProductController::class, 'store']);
     Route::get('/id={id}/show', [ProductController::class, 'show']);

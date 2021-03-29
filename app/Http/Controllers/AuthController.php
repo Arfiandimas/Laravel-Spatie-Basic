@@ -12,11 +12,6 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|max:255',
-            'password' => 'required|string|max:255'
-        ]);
-
-        $request->validate([
             'email' => 'required|string|max:255',
             'password' => 'required|string|max:255',
         ]);
@@ -27,7 +22,7 @@ class AuthController extends Controller
         {
             $check_password = Hash::check($request->password, $user->password);
             if ($check_password) {
-                $token = $user->createToken('My Token');
+                $token = $user->createToken('My Token',['admin']);
                 $user->token = $token->accessToken;
             } else {
                 return ngcApiFailed('Sign In Failed');        

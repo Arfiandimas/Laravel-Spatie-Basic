@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class Customer extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles, HasApiTokens;
 

@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'api',
+        'guard' => "admin",
         'passwords' => 'users',
     ],
 
@@ -41,9 +41,14 @@ return [
             'provider' => 'users',
         ],
 
-        'api' => [
+        'admin' => [
             'driver' => 'passport',
             'provider' => 'users'
+        ],
+
+        'customer' => [
+            'driver' => 'passport',
+            'provider' => 'customers'
         ],
     ],
 
@@ -70,10 +75,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'customers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Customer::class,
+        ],
     ],
 
     /*

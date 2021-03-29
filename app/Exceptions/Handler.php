@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'success' => false,
                 'status_code' => 403,
-                'message' => 'You do not have the required role.',
+                'message' => 'You do not have the required role or permission.',
                 'meta' => null
             ]);
         }

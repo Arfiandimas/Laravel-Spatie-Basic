@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Permission\Permission;
 
 class ProductController extends Controller
 {
@@ -14,10 +15,13 @@ class ProductController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:product-list', ['only' => ['index']]);
-         $this->middleware('permission:product-add', ['only' => ['store']]);
-         $this->middleware('permission:product-detail', ['only' => ['show']]);
-         $this->middleware('permission:product-delete', ['only' => ['destroy']]);
+        // $coba = new Permission;
+        // $coba->product('product',['index','store', 'show', 'update']);
+        $this->middleware('permission:product-index', ['only' => ['index']]);
+        $this->middleware('permission:product-store', ['only' => ['store']]);
+        $this->middleware('permission:product-show', ['only' => ['show']]);
+        $this->middleware('permission:product-update', ['only' => ['update']]);
+        $this->middleware('permission:product-destroy', ['only' => ['destroy']]);
     }
 
     /**

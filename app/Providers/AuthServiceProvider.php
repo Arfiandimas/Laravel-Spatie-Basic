@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     // protected $policies = [
-    //     // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+    //     'App\Models\Model' => 'App\Policies\ModelPolicy',
     // ];
 
     /**
@@ -25,8 +26,14 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole('super-admin') ? true : null;
-        });
+        Passport::routes();
+        Passport::tokensCan([
+            'admin' => 'Access Admin Backend',
+            'customer' => 'Access Customer App'
+        ]);
+
+        // Gate::before(function ($user, $ability) {
+        //     return $user->hasRole('super-admin') ? true : null;
+        // });
     }
 }
